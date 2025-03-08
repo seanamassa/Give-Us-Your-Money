@@ -3,6 +3,7 @@ class PlayScene extends Phaser.Scene {
     constructor() {
       super('PlayScene')
       this.money = 0
+      this.gems = 0
     }
   
     create() {
@@ -65,24 +66,24 @@ class PlayScene extends Phaser.Scene {
   }
 
   showMicrotransactionPopup() {
-    // Create a semi-transparent background for the popup
     let popupBg = this.add.rectangle(400, 300, 500, 300, 0x000000, 0.8);
     popupBg.setDepth(1);
 
-    // Random microtransaction text
     let offers = [
-        "Buy 1000 Gems for $9.99!",
-        "LIMITED DEAL: $4.99 for 500 Gems!",
-        "VIP PASS: $19.99 for 3x Money!",
-        "Mega Bundle: $49.99 for 10,000 Gems!"
+        { text: "Buy 1000 Gems for $9.99!", gems: 1000 },
+        { text: "LIMITED DEAL: $4.99 for 500 Gems!", gems: 500 },
+        { text: "VIP PASS: $19.99 for 3x Money!", gems: 1500 },
+        { text: "Mega Bundle: $49.99 for 10,000 Gems!", gems: 10000 }
     ];
-    let offerText = this.add.text(250, 250, Phaser.Math.RND.pick(offers), {
-        fontSize: '22px',
+
+    let selectedOffer = Phaser.Math.RND.pick(offers);
+    
+    let offerText = this.add.text(250, 250, selectedOffer.text, {
+        fontSize: '24px',
         fill: '#ffcc00',
         fontStyle: 'bold'
     }).setDepth(2);
 
-    // Fake "BUY" button
     let buyButton = this.add.text(350, 350, 'BUY NOW', {
         fontSize: '28px',
         fill: '#ffffff',
@@ -91,20 +92,22 @@ class PlayScene extends Phaser.Scene {
     }).setDepth(2).setInteractive();
 
     buyButton.on('pointerdown', () => {
+        this.gems += selectedOffer.gems;
+        this.gemText.setText('Gems: ' + this.gems);
+
         popupBg.destroy();
         offerText.destroy();
         buyButton.destroy();
     });
 
-    // Auto-close the popup after 5 seconds
-    this.time.delayedCall(7000, () => {
+    this.time.delayedCall(5000, () => {
         if (popupBg.active) {
             popupBg.destroy();
             offerText.destroy();
             buyButton.destroy();
         }
     });
-  }
+}
   
     update() {
       // Update logic if needed
