@@ -9,6 +9,8 @@ class Load extends Phaser.Scene {
         this.load.image('menuBackground', 'assets/img/menu.png')
         this.load.image('background', 'assets/img/busstop.png')
         this.load.image('coin', 'assets/img/coin.png')
+        this.load.image('building', 'assets/img/building.png')
+        this.load.image('school', 'assets/img/school.png')
         //this.load.image('terrancePhillip', 'assets/img/t_p2.png')
         this.load.spritesheet('terrancePhillip', 'assets/img/t_p2.png', {
           frameWidth: 140,
