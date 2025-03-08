@@ -1,3 +1,7 @@
+/* Terrance and Phillip: Give Us Your Money
+Based on the fake game from the tv show South Park
+// Created by Sean Massa
+*/
 class MainMenu extends Phaser.Scene {
     constructor() {
       super('MainMenu');
