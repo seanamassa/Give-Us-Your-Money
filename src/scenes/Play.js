@@ -61,7 +61,17 @@ class PlayScene extends Phaser.Scene {
         });
         // Start the random pop-up timer
         this.schedulePopup()
-        }
+
+        // Define the coin rotation animation
+        this.anims.create({
+            key: 'rotate',
+            frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 6 }), // Adjust based on your sprite sheet
+            frameRate: 10, // Adjust animation speed
+            repeat: -1 // Loop forever
+        });
+    }
+    
+
 
     spawnCoin() {
         // Generate random X and Y positions within the game bounds
@@ -69,7 +79,9 @@ class PlayScene extends Phaser.Scene {
         let y = Phaser.Math.Between(50, 550);
 
         // Create the coin sprite and make it interactive
-        let coin = this.add.sprite(x, y, 'coin').setScale(.25,.25).setInteractive()
+        let coin = this.add.sprite(x, y, 'coin').setScale(3.5,3.5).setInteractive()
+
+        coin.play('rotate')
 
         // When the coin is clicked, add money and remove the coin
         coin.on('pointerdown', () => {
