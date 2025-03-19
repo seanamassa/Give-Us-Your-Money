@@ -19,6 +19,8 @@ class Load extends Phaser.Scene {
           frameWidth: 32,  // Replace with the actual width of each frame
           frameHeight: 32  // Replace with the actual height of each frame
         })
+        this.load.audio('menuMusic', 'assets/audio/menuMusic.ogg')
+        this.load.audio('bgMusic', 'assets/audio/backgroundMusic.ogg');
         this.load.audio('fartSound', 'assets/audio/fart.mp3')
         this.load.audio('coinSound', 'assets/audio/coin.wav')
       }

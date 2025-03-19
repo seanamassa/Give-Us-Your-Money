@@ -11,8 +11,10 @@ class PlayScene extends Phaser.Scene {
   
     create() {
         // Add the background image
-        this.add.image(400, 300, 'background');
-    
+        this.add.image(400, 300, 'background')
+        this.music = this.sound.add('bgMusic', { volume: 0.5, loop: true })
+        this.music.play()
+
         // Create and display the score text
         this.moneyText = this.add.text(16, 16, 'Money: 0', {
         fontSize: '32px',
@@ -72,8 +74,7 @@ class PlayScene extends Phaser.Scene {
             repeat: -1 // Loop forever
         });
     }
-    
-
+     
 
     spawnCoin() {
         // Generate random X and Y positions within the game bounds
@@ -264,7 +265,11 @@ class PlayScene extends Phaser.Scene {
 
         playAgainButton.on('pointerdown', () => {
             // Restart the scene (reset game state)
-            this.scene.restart();
+            this.scene.restart()
+            this.money = 0
+            this.gems = 0  // Explicitly reset gems count
+            this.schoolBuilt = false // Track if the school is built
+            this.bankBuilt = false // Track if the bank is built
         });
 
         this.time.delayedCall(5000, () => {

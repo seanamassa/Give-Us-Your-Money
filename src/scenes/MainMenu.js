@@ -27,8 +27,19 @@ class MainMenu extends Phaser.Scene {
       }).setInteractive()
   
       creditsButton.on('pointerdown', () => {
-        this.scene.start('CreditsScene')
-      })  
+      this.scene.start('CreditsScene')
+      }) 
+      
+      let instructionsButton = this.add.text(50, 500, 'Instructions', {
+        fontSize: '28px',
+        fill: '#ffffff',
+        backgroundColor: '#007700',
+        padding: { x: 10, y: 5 }
+      }).setInteractive();
+      
+      instructionsButton.on('pointerdown', () => {
+        this.scene.start('InstructionsScene');
+      });
     }
   }
   

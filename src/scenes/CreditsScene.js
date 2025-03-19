@@ -1,38 +1,50 @@
 class CreditsScene extends Phaser.Scene {
-    constructor() {
-      super('CreditsScene');
-    }
-  
-    create() {
-      // Display background and title
-      //this.add.image(400, 300, 'menuBackground');
-      this.add.text(400, 100, 'Credits', {
-        fontStyle: 'Impact',
-        fontSize: '32px',
-        fill: '#fff'
-      }).setOrigin(0.5);
-  
-      // Credits text (you can change this to include real credits)
-      this.add.text(400, 200, 'Developed by: Your Name', {
-        fontSize: '24px',
-        fill: '#fff'
-      }).setOrigin(0.5);
-  
-      this.add.text(400, 250, 'Music by: Composer Name', {
-        fontSize: '24px',
-        fill: '#fff'
-      }).setOrigin(0.5);
-  
-      // Add back button to return to the main menu
-      let backButton = this.add.text(400, 450, 'Back to Main Menu', {
-        fontSize: '28px',
-        fill: '#ffffff',
-        backgroundColor: '#007700',
-        padding: { x: 10, y: 5 }
-      }).setInteractive();
-  
-      backButton.on('pointerdown', () => {
-        this.scene.start('MainMenu');
-      });
+  constructor() {
+    super('CreditsScene')
+    this.musicStarted = false
+  }
+
+  create() {
+    this.add.text(400, 100, 'Game Credits', {
+      fontSize: '32px',
+      fill: '#fff'
+    }).setOrigin(0.5)
+
+    this.add.text(400, 200, 'Created by: Sean Massa\nMusic by: Abstraction \nhttps://tallbeard.itch.io/music-loop-bundle\nThanks for playing my game!', {
+      fontSize: '24px',
+      fill: '#fff'
+    }).setOrigin(0.5)
+
+    // Create a Back button that returns to MainMenu
+    let backButton = this.add.text(400, 500, 'Back', {
+      fontSize: '28px',
+      fill: '#ffffff',
+      backgroundColor: '#007700',
+      padding: { x: 10, y: 5 }
+    }).setInteractive()
+
+    backButton.on('pointerdown', () => {
+      this.stopMusic(); // Stop music before switching scenes
+      this.scene.start('MainMenu')
+    });
+
+    this.startMusic()
+  }
+
+  startMusic() {
+    if (!this.musicStarted) {
+      this.musicStarted = true
+      this.creditsMusic = this.sound.add('menuMusic', { volume: 0.5, loop: true })
+      this.creditsMusic.play()
     }
   }
+
+  stopMusic() {
+    if (this.creditsMusic) {
+      this.creditsMusic.stop()
+      this.creditsMusic.destroy()
+      this.creditsMusic = null
+      this.musicStarted = false
+    }
+  }
+}
