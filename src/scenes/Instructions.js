@@ -34,7 +34,7 @@ class InstructionsScene extends Phaser.Scene {
       let backButton = this.add.text(400, 500, 'Back', {
         fontSize: '28px',
         fill: '#ffffff',
-        backgroundColor: '#770000',
+        backgroundColor: '#007700',
         padding: { x: 10, y: 5 }
       }).setInteractive()
   

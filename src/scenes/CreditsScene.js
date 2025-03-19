@@ -5,12 +5,14 @@ class CreditsScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.text(400, 100, 'Game Credits', {
-      fontSize: '32px',
-      fill: '#fff'
-    }).setOrigin(0.5)
+      // Title
+      this.add.text(400, 100, 'Credits\n', {
+        fontSize: '32px',
+        fill: '#ffffff',
+        fontStyle: 'bold'
+      }).setOrigin(0.5)
 
-    this.add.text(400, 200, 'Created by: Sean Massa\nMusic by: Abstraction \nhttps://tallbeard.itch.io/music-loop-bundle\nThanks for playing my game!', {
+    this.add.text(400, 200, 'Created by: Sean Massa\n\nMusic by: Abstraction\n\nhttps://tallbeard.itch.io/music-loop-bundle\n\nThanks for playing my game!', {
       fontSize: '24px',
       fill: '#fff'
     }).setOrigin(0.5)
