@@ -5,6 +5,8 @@
 // Created: 3/5/2025
 // Updated: 3/7/2025
 
+// Features Added:
+// 
 // fart sound found on https://pixabay.com/users/freesound_community-46691455/
 
 // game config
@@ -12,7 +14,7 @@ let config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    scene: [ Load, MainMenu, PlayScene ]
+    scene: [ Load, MainMenu, CreditsScene, PlayScene ]
 }
 
 const game = new Phaser.Game(config)

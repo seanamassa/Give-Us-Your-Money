@@ -5,6 +5,8 @@ class PlayScene extends Phaser.Scene {
       this.money = 0
       this.gems = 0
       this.buildings = []; // Store buildings under construction
+      this.schoolBuilt = false; // Track if the school is built
+      this.bankBuilt = false; // Track if the bank is built
     }
   
     create() {
@@ -37,7 +39,7 @@ class PlayScene extends Phaser.Scene {
         })
 
         // "Build School" Button
-        this.buildButton = this.add.text(300, 500, 'Build School ($500)', {
+        this.buildButton = this.add.text(50, 500, 'Build School ($500)', {
             fontSize: '28px',
             fill: '#ffffff',
             backgroundColor: '#007700',
@@ -57,7 +59,7 @@ class PlayScene extends Phaser.Scene {
         }).setInteractive();
 
         this.buildBankButton.on('pointerdown', () => {
-            this.startBuilding('bank');
+            this.startBuilding('bank')
         });
         // Start the random pop-up timer
         this.schedulePopup()
@@ -108,7 +110,7 @@ class PlayScene extends Phaser.Scene {
         let x = type === 'bank' ? 400 : 100;
         let y = type === 'bank' ? 300 : 200;
         let buildTime = type === 'bank' ? 30 : 6; // 30 seconds for bank, 6 for school
-        let buildingTexture = type === 'bank' ? 'bank' : 'building';
+        let buildingTexture = type === 'bank' ? 'building' : 'building';
     
         let building = this.add.sprite(x, y, buildingTexture).setDepth(1);
         let timerText = this.add.text(x - 20, y + 40, buildTime + 's', {
@@ -148,7 +150,13 @@ class PlayScene extends Phaser.Scene {
             } else {
                 this.showGemPopup();
             }
-        });
+        })
+        // Store reference to the button for later destruction
+        if (type === 'school') {
+            this.schoolButton = this.buildButton;  // Store reference to the school button
+        } else if (type === 'bank') {
+            this.bankButton = this.buildBankButton;  // Store reference to the bank button
+        }
     }
 
     showNotEnoughMoneyPopup() {
@@ -226,8 +234,44 @@ class PlayScene extends Phaser.Scene {
         if (timerEvent) {
             timerEvent.remove(false);  // Stop the timer
         }
-    
-        this.buildings = this.buildings.filter(b => b.building !== building);
+
+        // Remove the button based on the building type
+        if (type === 'school' && this.schoolButton) {
+            this.schoolButton.destroy()  // Destroy the school build button when the building is completed
+            this.schoolBuilt = true;  // Set schoolBuilt to true
+        } else if (type === 'bank' && this.bankButton) {
+            this.bankButton.destroy()  // Destroy the bank build button when the building is completed
+            this.bankBuilt = true;  // Set bankBuilt to true
+        }
+        this.buildings = this.buildings.filter(b => b.building !== building)
+
+        // Win Condition: if both buildings are built and show the "You Win" popup
+        if (this.schoolBuilt && this.bankBuilt) {
+            this.showWinPopup();
+        }
+    }
+
+    showWinPopup() {
+        let popup = this.add.rectangle(400, 300, 400, 200, 0x000000, 0.8);
+        let text = this.add.text(270, 250, 'Congratulations! You have won!', { fontSize: '24px', fill: '#ffcc00' });
+
+        let playAgainButton = this.add.text(350, 320, 'Play Again', {
+            fontSize: '20px',
+            fill: '#ffffff',
+            backgroundColor: '#008800',
+            padding: { x: 8, y: 5 }
+        }).setInteractive();
+
+        playAgainButton.on('pointerdown', () => {
+            // Restart the scene (reset game state)
+            this.scene.restart();
+        });
+
+        this.time.delayedCall(5000, () => {
+            popup.destroy();
+            text.destroy();
+            playAgainButton.destroy();
+        });
     }
 
     showPopup(message) {

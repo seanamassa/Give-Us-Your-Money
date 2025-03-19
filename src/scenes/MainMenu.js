@@ -17,6 +17,18 @@ class MainMenu extends Phaser.Scene {
       playButton.on('pointerdown', () => {
         this.scene.start('PlayScene')
       })
+
+      // Create a Credits button that transitions to CreditsScene on click
+      let creditsButton = this.add.text(600, 500, 'Credits', {
+        fontSize: '28px',
+        fill: '#ffffff',
+        backgroundColor: '#007700',
+        padding: { x: 10, y: 5 }
+      }).setInteractive()
+  
+      creditsButton.on('pointerdown', () => {
+        this.scene.start('CreditsScene')
+      })  
     }
   }
   
