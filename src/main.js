@@ -16,10 +16,10 @@
 // [X] Building completion event – Fires an event when a building finishes construction. 
 // [X] Terrance/Phillip character spawns a coin and plays a fart sound on player interaction 
 // [X] Looping background music
-// [ ] Added animation to the Terrance/Phillip character using a spritesheet, 
 // [X] Credits Scene
 // [X] Restart functionality from within the game
 // [X] In-game instructions or tutorial for the player
+// [ ] Added animation to the Terrance/Phillip character using a spritesheet 
 // ===========================================================
 // 
 // fart sound found on https://pixabay.com/users/freesound_community-46691455/
