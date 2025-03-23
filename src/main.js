@@ -13,8 +13,8 @@
 // [X] Use of timers to speed up building completion – Buildings can be accelerated by spending Gems.  
 // [X] Building placement system – Players can place two buildings at specified locations.   
 // [X] Building texture swapping – Different textures applied to buildings based on type or state.  
-// [X] Building completion event – Fires an event when a building finishes construction. 
-// [X] Terrance/Phillip character spawns a coin and plays a fart sound on player interaction 
+// [X] Terrance/Phillip character spawns a coin and plays a fart sound on player interaction
+// [X] In-game Pop up using a Tween effect that rotates and fades away
 // [X] Looping background music
 // [X] Credits Scene
 // [X] Restart functionality from within the game

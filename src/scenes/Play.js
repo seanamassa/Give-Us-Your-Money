@@ -3,7 +3,7 @@ class PlayScene extends Phaser.Scene {
     constructor() {
       super('PlayScene')
       this.money = 0
-      this.gems = 0
+      this.Dough = 0
       this.buildings = []; // Store buildings under construction
       this.schoolBuilt = false; // Track if the school is built
       this.bankBuilt = false; // Track if the bank is built
@@ -22,7 +22,7 @@ class PlayScene extends Phaser.Scene {
         });
 
         // Create and display the gem counter (top-right)
-        this.gemText = this.add.text(600, 16, 'Gems: 0', {
+        this.gemText = this.add.text(550, 16, 'Dough: 0', {
         fontSize: '32px',
         fill: '#00ffcc' // Make it stand out
         });
@@ -32,7 +32,7 @@ class PlayScene extends Phaser.Scene {
         this.coinSound = this.sound.add('coinSound')
 
         // Add the Terrance and Phillip sprite and make it interactive
-        this.terrancePhillipSprite = this.add.sprite(400, 400, 'terrancePhillip', 0).setInteractive();
+        this.terrancePhillipSprite = this.add.sprite(400, 400, 'terrancePhillip', 0).setInteractive().setScale(.25,.25)
     
         // When the sprite is clicked, play the fart sound and update the score
         this.terrancePhillipSprite.on('pointerdown', () => {
@@ -89,7 +89,7 @@ class PlayScene extends Phaser.Scene {
         // When the coin is clicked, add money and remove the coin
         coin.on('pointerdown', () => {
             this.coinSound.play()
-            this.money += 10; // Increase money count
+            this.money += 1; // Increase money count
             this.moneyText.setText('Money: ' + this.money) // Update displayed money
             coin.destroy() // Remove the coin after clicking
         });
@@ -108,7 +108,7 @@ class PlayScene extends Phaser.Scene {
     }
 
     constructBuilding(type) {
-        let x = type === 'bank' ? 400 : 100;
+        let x = type === 'bank' ? 80 : 80;
         let y = type === 'bank' ? 300 : 200;
         let buildTime = type === 'bank' ? 30 : 6; // 30 seconds for bank, 6 for school
         let buildingTexture = type === 'bank' ? 'building' : 'building';
@@ -121,7 +121,7 @@ class PlayScene extends Phaser.Scene {
     
         let speedUpCost = type === 'bank' ? 250 : 50;
     
-        let speedUpButton = this.add.text(x - 40, y + 70, 'Speed Up!', {
+        let speedUpButton = this.add.text(x - 40, y + 70, 'Speed Up!\nUse Dough', {
             fontSize: '18px',
             fill: '#ffffff',
             backgroundColor: '#ff0000',
@@ -144,9 +144,9 @@ class PlayScene extends Phaser.Scene {
         this.buildings.push({ building, timerText, buildTime, speedUpButton, type, timerEvent });
     
         speedUpButton.on('pointerdown', () => {
-            if (this.gems >= speedUpCost) {
-                this.gems -= speedUpCost;
-                this.gemText.setText('Gems: ' + this.gems);
+            if (this.Dough >= speedUpCost) {
+                this.Dough -= speedUpCost;
+                this.gemText.setText('Dough: ' + this.Dough);
                 this.completeBuilding(building, timerText, speedUpButton, type, timerEvent);
             } else {
                 this.showGemPopup();
@@ -164,7 +164,7 @@ class PlayScene extends Phaser.Scene {
         let popup = this.add.rectangle(400, 300, 350, 200, 0x000000, 0.8)
         let text = this.add.text(320, 260, 'Not enough money!', { fontSize: '24px', fill: '#ffcc00' })
 
-        let buyMoneyButton = this.add.text(330, 320, 'Buy $500 (10 Gems)', {
+        let buyMoneyButton = this.add.text(330, 320, ' Buy $500\n(1000 Dough)', {
             fontSize: '22px',
             fill: '#ffffff',
             backgroundColor: '#008800',
@@ -172,11 +172,11 @@ class PlayScene extends Phaser.Scene {
         }).setInteractive()
 
         buyMoneyButton.on('pointerdown', () => {
-            if (this.gems >= 10) {
-                this.gems -= 10;
+            if (this.Dough >= 1000) {
+                this.Dough -= 1000;
                 this.money += 500;
                 this.moneyText.setText('Money: ' + this.money)
-                this.gemText.setText('Gems: ' + this.gems)
+                this.gemText.setText('Dough: ' + this.Dough)
                 popup.destroy();
                 text.destroy();
                 buyMoneyButton.destroy()
@@ -194,23 +194,23 @@ class PlayScene extends Phaser.Scene {
 
     showGemPopup() {
         let popup = this.add.rectangle(400, 300, 350, 200, 0x000000, 0.8)
-        let text = this.add.text(320, 260, 'Not enough gems! Buy more?', { fontSize: '24px', fill: '#ffcc00' })
+        let text = this.add.text(320, 260, 'Not enough Dough! Buy more?', { fontSize: '24px', fill: '#ffcc00' })
 
-        let buyGemsButton = this.add.text(350, 320, 'Buy 100 Gems ($9.99)', {
+        let buyDoughButton = this.add.text(350, 320, 'Buy 100 Dough ($9.99)', {
             fontSize: '22px',
             fill: '#ffffff',
             backgroundColor: '#ff0000',
             padding: { x: 8, y: 5 }
         }).setInteractive()
 
-        buyGemsButton.on('pointerdown', () => {
-            this.showPopup("Sorry, no real purchases here!")
+        buyDoughButton.on('pointerdown', () => {
+            this.showPopup("Sorry, no offers at this time")
         });
 
         this.time.delayedCall(5000, () => {
             popup.destroy();
             text.destroy();
-            buyGemsButton.destroy();
+            buyDoughButton.destroy();
         });
     }
 
@@ -254,7 +254,7 @@ class PlayScene extends Phaser.Scene {
 
     showWinPopup() {
         let popup = this.add.rectangle(400, 300, 400, 200, 0x000000, 0.8);
-        let text = this.add.text(270, 250, 'Congratulations! You have won!', { fontSize: '24px', fill: '#ffcc00' });
+        let text = this.add.text(280, 250, '     You have won!\n Spend all over again?', { fontSize: '24px', fill: '#ffcc00' });
 
         let playAgainButton = this.add.text(350, 320, 'Play Again', {
             fontSize: '20px',
@@ -264,15 +264,17 @@ class PlayScene extends Phaser.Scene {
         }).setInteractive();
 
         playAgainButton.on('pointerdown', () => {
+
+            this.sound.stopAll();  // Stops all music and sounds
             // Restart the scene (reset game state)
             this.scene.restart()
             this.money = 0
-            this.gems = 0  // Explicitly reset gems count
+            this.Dough = 0  // Explicitly reset Dough count
             this.schoolBuilt = false // Track if the school is built
             this.bankBuilt = false // Track if the bank is built
         });
 
-        this.time.delayedCall(5000, () => {
+        this.time.delayedCall(5000000, () => {
             popup.destroy();
             text.destroy();
             playAgainButton.destroy();
@@ -290,7 +292,7 @@ class PlayScene extends Phaser.Scene {
     }
 
     showGemPopup() {
-        this.showPopup("Not enough Gems! Buy more!")
+        this.showPopup("Need more Dough!\n Buy more!")
     }
 
     schedulePopup() {
@@ -302,15 +304,16 @@ class PlayScene extends Phaser.Scene {
         });
     }
 
+    // Pop up Offers
     showMicrotransactionPopup() {
         let popupBg = this.add.rectangle(400, 300, 500, 300, 0x000000, 0.8)
         popupBg.setDepth(1)
 
         let offers = [
-            { text: "Buy 1000 Gems for $9.99!", gems: 1000 },
-            { text: "LIMITED DEAL: $4.99 for 500 Gems!", gems: 500 },
-            { text: "VIP PASS: $19.99 for 3x Money!", gems: 1500 },
-            { text: "Mega Bundle: $49.99 for 10,000 Gems!", gems: 10000 }
+            { text: "   QUICK DEAL: $9.99\n     for 1000 Dough!", Dough: 1000 },
+            { text: "   LIMITED DEAL: $4.99\n      for 500 Dough!", Dough: 500 },
+            { text: "   VIP PASS: $19.99\n     for 3x Dough!", Dough: 1500 },
+            { text: "   Mega Bundle: $49.99\n      for 10,000 Dough!", Dough: 10000 }
         ]
 
         let selectedOffer = Phaser.Math.RND.pick(offers)
@@ -328,16 +331,43 @@ class PlayScene extends Phaser.Scene {
             padding: { x: 10, y: 5 }
         }).setDepth(2).setInteractive()
 
-        buyButton.on('pointerdown', () => {
-            this.gems += selectedOffer.gems;
-            this.gemText.setText('Gems: ' + this.gems)
+        buyButton.on('pointerdown', () => { 
+            this.Dough += selectedOffer.Dough;
+            this.gemText.setText('Dough: ' + this.Dough);
+        
+            this.sound.play('cashRegister') // play cash register sound after purchase
 
-            popupBg.destroy()
-            offerText.destroy()
-            buyButton.destroy()
+            // Create the image (e.g., a gem icon or effect)
+            const gemImage = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'popup'); // Use the key for your image asset
+        
+            // Apply a tween to make the image spin, pause, then fade away
+            this.tweens.add({
+                targets: gemImage,
+                rotation: '6.3',  // Spins the image
+                duration: 2000,      // Duration for the spinning (2 seconds)
+                ease: 'Cubic',       // Smooth easing for the spin
+                onComplete: () => {
+                    // Once the spin is complete, pause for a short time, then fade away
+                    this.tweens.add({
+                        targets: gemImage,
+                        alpha: 0,           // Fade out
+                        duration: 1000,     // Fade out duration (1 second)
+                        ease: 'Linear',     // Linear fade
+                        onComplete: () => {
+                            // Destroy the image after fading out
+                            gemImage.destroy();
+                        }
+                    });
+                }
+            });
+        
+            // Clean up the popup and offer components
+            popupBg.destroy();
+            offerText.destroy();
+            buyButton.destroy();
         });
 
-        this.time.delayedCall(5000, () => {
+        this.time.delayedCall(7000, () => {
             if (popupBg.active) {
                 popupBg.destroy()
                 offerText.destroy()
